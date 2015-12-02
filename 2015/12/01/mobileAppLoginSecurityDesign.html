@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+　　<html>
+　　<head>
+　　　　<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link href="/stylesheets/pygments.css" rel="stylesheet" type="text/css">
+	<link href="/stylesheets/github.css" rel="stylesheet" type="text/css">
+　　　　<title>移动APP登录安全设计</title>
+　　</head>
+　　<body>
+
+　　　　<h2>移动APP登录安全设计</h2>
+
+<hr>
+
+<p>现在每个移动APP几乎都会有登录模块， 并且移动APP都是一次登录之后，只要没有卸载APP，那么后续都会自动登录的。 那么该如何设计一个安全的登录模块的？</p>
+
+<h3>不要在客户端储存用户名密码</h3>
+
+<p>这是一个基本原则， 有些程序员为了省事，把用户名密码存储在客户端，每次用户打开APP时，自动帮用户提交用户名密码来达到免登的假象。 实际上这是非常不负责任的， 如果登录请求使用的是Https还好（依然有泄露危险），否则用户的用户名和密码是非常不安全的。 考虑到很多用户很多的网站使用的都是相同的用户名密码，一旦在你的APP泄露了用户的用户名密码，那么对用户造成的损失是非常巨大的。  </p>
+
+<h3>使用SSL</h3>
+
+<p>网络传输的过程是我们APP不可控的，也许用户现在就是处于一个不安全的网络环境（某些黑心公共wifi等），如果我们用户登录的时候，明文传输用户的用户名密码，那么还是会有很大的风险会泄露的。 所以我们要把登录接口设计成使用SSL， 即使传输过程中被截获， 黑客也无法知道消息的内容。   </p>
+
+<p>至于是不是全站使用SSL，请视自己的安全级别而定，毕竟使用SSL会影响一定的性能。</p>
+
+<h3>使用Session</h3>
+
+<p>PC端的登录一般都是使用Session来保持登录状态，我们可以把Session放到内存中，保持登录状态的同时，还可以同时保存些常用的信息（用户id，昵称，头像地址等）。 但是Session不应该一直存在，否则我们的内存早晚都会被消耗完，所以一般做法是用户一旦没有和服务器在30分钟直接做任何的交互，那么就会失效掉Session。  </p>
+
+<p>移动APP端我们也可以采用这种方法，但是移动APP应该是每次都是自动登录的，那么当Session失效掉之后，我们该怎么办呢？</p>
+
+<h3>使用access_token</h3>
+
+<p>这里借鉴Oauth的理念， 使用access_token作为用户登录之后的一个凭证存储到客户端， 这样当Session失效掉的时候，我们可以认为access_token来重新生成一个新的Session。 </p>
+
+<p>但是这里依然有一个问题， <code>access_token</code>泄露了怎么办？ Oauth的做法是使access_token定期失效掉（例如1天），这样即使这个access_token泄露了，那么对用户的影响也是在有限的时间内。  </p>
+
+<p>那么当access_token过期了怎么办？</p>
+
+<h3>使用refresh_token</h3>
+
+<p>Oauth里面使用refresh_token来重新获取access_token， 而refresh_token是长期有效的。 当access_token过期的时候， 我们就要用refresh_token来重新获取一个access_token。  </p>
+
+<p>那么一旦别人获取到了refresh_token泄露，那么岂不黑客就会为所欲为了？  </p>
+
+<p>理论上来说，是的，一旦黑客获取到了refresh_token，那么他就可以无限次的获取到access_token， 这样除非用户修改密码（这时会重新生成refresh_token），否则黑客就可以一直获取到用户信息。  </p>
+
+<p>Oauth的解释是这样的，refresh_token的使用应该只和授权服务器交互，并且这种交互必须使用SSL，而access_token要用来和资源服务器交互，这里并没有强制使用SSL，所以refresh_token被泄露的可能性是很小的。  </p>
+
+<p>所以这里，我们也要如此设计，设计到使用refresh_token的地方（登录接口--生成refresh_token, 刷新access_token接口）都必须是使用SSL。</p>
+
+
+　　</body>
+　　</html>
