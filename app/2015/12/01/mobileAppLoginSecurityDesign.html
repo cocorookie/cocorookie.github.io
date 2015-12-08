@@ -124,8 +124,10 @@
 
 <p>所以这里，我们也要如此设计，设计到使用refresh_token的地方（登录接口--生成refresh_token, 刷新access_token接口）都必须是使用SSL。</p>
 
+				<div style="border-bottom:1px dotted;margin-top:20px;"></div>
+				<div id="disqus_thread"></div>
 			</div> <!-- end of entry -->
-
+			
 			<div style="width:240px;  float:right; padding:20px; margin-bottom:40px; ">
 				<div id="menuIndex" class="sidenav" style="max-height: 600px; position: fixed; top: 75px; "></div>
 			</div>
@@ -136,6 +138,29 @@
 				    $('#menuIndex').toc();
 				}); </script>
 		</div>
+	
+		<script>
+		/**
+		* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+		* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+		*/
+		
+		var disqus_config = function () {
+			this.page.url = /app/2015/12/01/mobileAppLoginSecurityDesign.html; // Replace PAGE_URL with your page's canonical URL variable
+			this.page.identifier = 移动APP登录安全设计; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+		};
+		
+		(function() { // DON'T EDIT BELOW THIS LINE
+		var d = document, s = d.createElement('script');
+
+		s.src = '//cocorookie.disqus.com/embed.js';
+
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+		})();
+		</script>
+		<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
 		<footer class="footer">
   <div class="container">
     <p class="text-muted">版权所有 © 2015-2025 Cocorookie – liwenmao.com.</p>

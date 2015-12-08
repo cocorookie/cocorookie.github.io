@@ -219,7 +219,7 @@ pre code span.lineno {
 .sidenav li {margin-bottom:12px; word-break: break-all;}
 .sidenav li:last-child { margin-bottom:5px;}
 .sidenav a {color:#555; font-size:14px; display:block;}
-.entry{margin-bottom:20px;width:820px; float:left; background:#fff; padding:30px; box-shadow:0 2px 6px #ccc;}
+.entry{margin-bottom:70px;width:820px; float:left; background:#fff; padding:30px; box-shadow:0 2px 6px #ccc;}
 /* background: rgba(199, 237, 204,1); */
 .entry ul{margin-bottom:25px;margin-left:25px;}
 .entry p+ul {margin-top:-20px;}
